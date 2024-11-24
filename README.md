@@ -5,7 +5,7 @@
 
 ### Milestones, 22.11 - 29.11
 - [x] Create Project
-- [ ] Make UI 
+- [x] Make UI 
 - [ ] Connect JSON API
 - [ ] Manage CoreData
 - [ ] Add Search
