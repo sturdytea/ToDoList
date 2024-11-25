@@ -18,7 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow()
-        window.rootViewController = TaskListViewController()
+        let taskListView = TaskListRouter.createTaskListModule()
+        window.rootViewController = taskListView
         window.makeKeyAndVisible()
         self.window = window
         return true

@@ -10,3 +10,27 @@
     
 
 import Foundation
+
+final class TaskDetailsPresenter: TaskDetailsPresenterProtocol {
+    
+    var view: TaskDetailsViewProtocol?
+    var interactor: TaskDetailsInteractorInputProtocol?
+    var router: TaskDetailsRouterProtocol?
+    
+    func viewDidLoad() {
+        if let task = interactor?.task {
+            view?.showTask(task)
+        }
+    }
+    
+    func editTask(todo: String, desc: String) {
+        interactor?.editTask(todo: todo, desc: desc)
+    }
+}
+
+extension TaskDetailsPresenter: TaskDetailsInteractorOutputProtocol {
+    
+    func didEditTask(_ task: Task) {
+        view?.showTask(task)
+    }
+}
