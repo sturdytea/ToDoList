@@ -23,6 +23,7 @@ protocol TaskListPresenterProtocol {
     var router: TaskListRouterProtocol? { get set }
     func viewWillAppear()
     func showTaskDetails(_ task: Task)
+    func showEmptyTaskDetails()
     func addTask(_ task: Task)
     func removeTask(_ task: Task)
 }
@@ -44,4 +45,9 @@ protocol TaskListInteractorOutputProtocol {
 protocol TaskListRouterProtocol {
     static func createTaskListModule() -> UIViewController
     func presentTaskDetailsScreen(from view: TaskListViewProtocol, for task: Task)
+    func presentNewTaskDetailsScreen(from view: TaskListViewProtocol)
+}
+
+protocol TaskListViewDelegate {
+    func didTapCreateNewTask()
 }

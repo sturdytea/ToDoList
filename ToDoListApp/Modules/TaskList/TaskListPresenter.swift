@@ -26,6 +26,11 @@ final class TaskListPresenter: TaskListPresenterProtocol {
         router?.presentTaskDetailsScreen(from: view, for: task)
     }
     
+    func showEmptyTaskDetails() {
+        guard let view = view else { return }
+        router?.presentNewTaskDetailsScreen(from: view)
+    }
+    
     func addTask(_ task: Task) {
         interactor?.saveTask(task)
     }

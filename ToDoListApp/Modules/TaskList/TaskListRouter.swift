@@ -38,4 +38,14 @@ final class TaskListRouter: TaskListRouterProtocol {
         
         view.navigationController?.pushViewController(taskDetailsViewController, animated: true)
     }
+    
+    public func presentNewTaskDetailsScreen(from view: TaskListViewProtocol) {
+        let taskDetailsViewController = TaskDetailsRouter.createTaskDetailsModule()
+        
+        guard let view = view as? UIViewController else {
+            fatalError("TaskListRouter: Invalid View Protocol")
+        }
+        
+        view.navigationController?.pushViewController(taskDetailsViewController, animated: true)
+    }
 }

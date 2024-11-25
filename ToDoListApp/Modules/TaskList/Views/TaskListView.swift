@@ -13,6 +13,8 @@ import UIKit
 
 final class TaskListView: UIView {
     
+    var delegate: TaskListViewDelegate?
+    
     private(set) lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(TaskListTableViewCell.self, forCellReuseIdentifier: TaskListTableViewCell.identifier)
@@ -35,7 +37,7 @@ final class TaskListView: UIView {
         
         let spaceArea: UIBarButtonItem = .init(systemItem: .flexibleSpace)
         let taskCount: UIBarButtonItem = .init(title: "\(amount) \(LocalizedContent.tasksAmount)", style: .plain, target: self, action: .none)
-        let newTask: UIBarButtonItem = .init(image: UIImage(systemName: "square.and.pencil"), style: .done, target: self, action: .none) // TODO: Implement creating new todo
+        let newTask: UIBarButtonItem = .init(image: UIImage(systemName: "square.and.pencil"), style: .done, target: self, action: #selector(createNewTaskTapped))
         
         let customFont = UIFont.systemFont(ofSize: 11)
         let customAttributes: [NSAttributedString.Key: Any] = [
@@ -84,5 +86,9 @@ final class TaskListView: UIView {
 extension TaskListView {
     func configureToolBar(amount: Int) {
         self.amount = amount
+    }
+    
+    @objc func createNewTaskTapped() {
+        delegate?.didTapCreateNewTask()
     }
 }

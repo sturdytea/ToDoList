@@ -35,6 +35,7 @@ final class TaskListViewController: UITableViewController {
     }
     
     private func setupView() {
+        taskListView.delegate = self
         taskListView.tableView.delegate = self
         taskListView.tableView.dataSource = self
         
@@ -49,7 +50,6 @@ final class TaskListViewController: UITableViewController {
             ]
             navigationController.navigationBar.prefersLargeTitles = true
         }
-        
         taskListView.configureToolBar(amount: tasks.count)
     }
     
@@ -76,10 +76,6 @@ final class TaskListViewController: UITableViewController {
             presenter?.removeTask(taskItem)
         }
     }
-    
-    @objc func createNewTaskTapped() {
-       // TODO: Implement creating new todo
-    }
 }
 
 extension TaskListViewController: TaskListViewProtocol {
@@ -90,5 +86,11 @@ extension TaskListViewController: TaskListViewProtocol {
     func showErrorMessage(_ message: String) {
         let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    }
+}
+
+extension TaskListViewController: TaskListViewDelegate {
+    func didTapCreateNewTask() {
+        presenter?.showEmptyTaskDetails()
     }
 }
