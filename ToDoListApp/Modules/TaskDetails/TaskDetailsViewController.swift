@@ -38,7 +38,7 @@ final class TaskDetailsViewController: UIViewController {
 
 extension TaskDetailsViewController: TaskDetailsViewProtocol {
     
-    func showTask(_ task: Task) {
+    func showTask(_ task: TaskModel) {
         taskDetailsView.title.text = task.todo
         taskDetailsView.desc.text = task.desc
     }

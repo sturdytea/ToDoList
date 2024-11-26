@@ -14,7 +14,7 @@ import UIKit
 final class TaskListViewController: UITableViewController {
     
     var presenter: TaskListPresenterProtocol?
-    var tasks: [Task] = TaskStore.init().tasks {
+    var tasks: [TaskModel] = [] {
         didSet {
             taskListView.tableView.reloadData()
         }
@@ -27,6 +27,9 @@ final class TaskListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        Task {
+            await presenter?.loadTasks()
+        }
         setupView()
     }
     
@@ -79,8 +82,9 @@ final class TaskListViewController: UITableViewController {
 }
 
 extension TaskListViewController: TaskListViewProtocol {
-    func showTasks(_ tasks: [Task]) {
+    func showTasks(_ tasks: [TaskModel]) {
         self.tasks = tasks
+        taskListView.tableView.reloadData()
     }
     
     func showErrorMessage(_ message: String) {

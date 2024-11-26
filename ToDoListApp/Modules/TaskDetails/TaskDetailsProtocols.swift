@@ -13,7 +13,7 @@ import UIKit
 
 protocol TaskDetailsViewProtocol {
     var presenter: TaskDetailsPresenterProtocol? { get set }
-    func showTask(_ task: Task)
+    func showTask(_ task: TaskModel)
 }
 
 protocol TaskDetailsPresenterProtocol {
@@ -26,15 +26,15 @@ protocol TaskDetailsPresenterProtocol {
 
 protocol TaskDetailsInteractorInputProtocol {
     var presenter: TaskDetailsInteractorOutputProtocol? { get set }
-    var task: Task? { get set }
+    var task: TaskModel? { get set }
     func editTask(todo: String, desc: String)
 }
 
 protocol TaskDetailsInteractorOutputProtocol {
-    func didEditTask(_ task: Task)
+    func didEditTask(_ task: TaskModel)
 }
 
 protocol TaskDetailsRouterProtocol {
-    static func createTaskDetailsModule(with task: Task) -> UIViewController
+    static func createTaskDetailsModule(with task: TaskModel) -> UIViewController
     func navigateBackToTaskListViewController(from view: TaskDetailsViewProtocol)
 }

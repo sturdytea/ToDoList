@@ -30,7 +30,7 @@ final class TaskDetailsPresenter: TaskDetailsPresenterProtocol {
 
 extension TaskDetailsPresenter: TaskDetailsInteractorOutputProtocol {
     
-    func didEditTask(_ task: Task) {
+    func didEditTask(_ task: TaskModel) {
         view?.showTask(task)
     }
 }

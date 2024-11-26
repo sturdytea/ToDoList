@@ -13,7 +13,7 @@ import UIKit
 
 final class TaskDetailsRouter: TaskDetailsRouterProtocol {
     
-    static func createTaskDetailsModule(with task: Task) -> UIViewController {
+    static func createTaskDetailsModule(with task: TaskModel) -> UIViewController {
         let taskDetailsViewController = TaskDetailsViewController()
         let presenter = TaskDetailsPresenter()
         let interactor = TaskDetailsInteractor()

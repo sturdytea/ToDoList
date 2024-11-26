@@ -29,7 +29,7 @@ final class TaskListRouter: TaskListRouterProtocol {
         return navigationController
     }
     
-    public func presentTaskDetailsScreen(from view: TaskListViewProtocol, for task: Task) {
+    public func presentTaskDetailsScreen(from view: TaskListViewProtocol, for task: TaskModel) {
         let taskDetailsViewController = TaskDetailsRouter.createTaskDetailsModule(with: task)
         
         guard let view = view as? UIViewController else {

@@ -11,7 +11,7 @@
 
 import Foundation
 
-class Task {
+class MockTask {
     var id: Int
     var todo: String
     var isCompleted: Bool

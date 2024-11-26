@@ -14,12 +14,12 @@ import Foundation
 final class TaskDetailsInteractor: TaskDetailsInteractorInputProtocol {
     
     var presenter: TaskDetailsInteractorOutputProtocol?
-    var task: Task?
+    var task: TaskModel?
     
     func editTask(todo: String, desc: String) {
         guard let task = task else { return }
-        task.todo = todo
-        task.desc = desc
+//        task.todo = todo TODO: Resolve later
+//        task.desc = desc
         presenter?.didEditTask(task)
     }
 }
