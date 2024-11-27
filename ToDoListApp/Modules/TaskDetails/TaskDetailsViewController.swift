@@ -14,6 +14,8 @@ import UIKit
 final class TaskDetailsViewController: UIViewController, UITextFieldDelegate {
 
     var presenter: TaskDetailsPresenterProtocol?
+    private var initialTitle: String?
+    private var initialDescription: String?
     
     private lazy var taskDetailsView = TaskDetailsView()
     override func loadView() {
@@ -39,13 +41,20 @@ final class TaskDetailsViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        initialTitle = taskDetailsView.title.text
+        initialDescription = taskDetailsView.desc.text
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        guard let title = taskDetailsView.title.text,
+        if let title = taskDetailsView.title.text,
               !title.isEmpty,
-              title != "" else { return }
-        presenter?.addTask(title)
+              title != initialTitle,
+              !title.trimmingCharacters(in: .whitespaces).isEmpty {
+            presenter?.addTask(title)
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -74,5 +83,7 @@ extension TaskDetailsViewController: TaskDetailsViewProtocol {
     func showTask(_ task: TaskEntity) {
         taskDetailsView.title.text = task.todo
         taskDetailsView.desc.text = task.desc
+        initialTitle = task.todo
+        initialDescription = task.desc
     }
 }

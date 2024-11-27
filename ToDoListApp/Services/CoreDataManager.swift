@@ -33,6 +33,7 @@ final class CoreDataManager {
         
         guard !title.isEmpty else { return }
         
+        newTask.id = UUID()
         newTask.todo = title
         newTask.isCompleted = false
         newTask.date = Date()
