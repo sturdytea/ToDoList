@@ -18,7 +18,7 @@ class TaskModel {
         self.response = response
     }
     
-    var id: Int {
+    var id: UUID {
         response.id
     }
     

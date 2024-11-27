@@ -14,12 +14,35 @@ import Foundation
 final class TaskDetailsInteractor: TaskDetailsInteractorInputProtocol {
     
     var presenter: TaskDetailsInteractorOutputProtocol?
-    var task: TaskModel?
+    var task: TaskEntity?
+    private let taskManager: TaskManager
+    private let coreDataManager: CoreDataManager
+    
+    init() {
+        self.taskManager = TaskManager()
+        self.coreDataManager = CoreDataManager()
+    }
+    
+    func saveTask(_ title: String) {
+        coreDataManager.createTask(title: title)
+        presenter?.didAddTask(title)
+    }
     
     func editTask(todo: String, desc: String) {
         guard let task = task else { return }
-//        task.todo = todo TODO: Resolve later
-//        task.desc = desc
+        
+        if todo != "" && todo != task.todo {
+            task.todo = todo
+        }
+        
+        if desc != "" && desc != task.desc {
+            task.desc = desc
+        }
         presenter?.didEditTask(task)
+    }
+    
+    func retrieveTasks() {
+        let tasks = self.coreDataManager.getTasks()
+        presenter?.didRetriveTasks(tasks)
     }
 }

@@ -36,7 +36,7 @@ final class TaskListPresenter: TaskListPresenterProtocol {
         interactor?.retrieveTasks()
     }
     
-    func showTaskDetails(_ task: TaskModel) {
+    func showTaskDetails(_ task: TaskEntity) {
         guard let view = view else { return }
         router?.presentTaskDetailsScreen(from: view, for: task)
     }
@@ -46,26 +46,22 @@ final class TaskListPresenter: TaskListPresenterProtocol {
         router?.presentNewTaskDetailsScreen(from: view)
     }
     
-    func addTask(_ task: TaskModel) {
-        interactor?.saveTask(task)
-    }
-    
-    func removeTask(_ task: TaskModel) {
+    func removeTask(_ task: TaskEntity) {
         interactor?.deleteTask(task)
     }
 }
 
 extension TaskListPresenter: TaskListInteractorOutputProtocol {
     
-    func didAddTask(_ task: TaskModel) {
+    func didAddTask(_ task: TaskEntity) {
         interactor?.retrieveTasks()
     }
     
-    func didRemoveTask(_ task: TaskModel) {
+    func didRemoveTask(_ task: TaskEntity) {
         interactor?.retrieveTasks()
     }
     
-    func didRetriveTasks(_ tasks: [TaskModel]) {
+    func didRetriveTasks(_ tasks: [TaskEntity]) {
         view?.showTasks(tasks)
     }
     

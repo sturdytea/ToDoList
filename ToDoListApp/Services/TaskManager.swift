@@ -14,8 +14,9 @@ import Foundation
 class TaskManager {
     private let url = "https://dummyjson.com/todos"
     private lazy var decoder = JSONDecoder()
+    private lazy var coreDataManager = CoreDataManager()
     
-    func fetchTasks() async throws -> [TaskModel] {
+    func fetchTasks() async throws -> [TaskEntity] {
         guard let url = URL(string: url) else {
             throw TaskError.network
         }
@@ -32,8 +33,8 @@ class TaskManager {
                 .map({ item in
                     TaskModel(response: item)
                 })
-            print(tasks)
-            return tasks
+            print(coreDataManager.taskEntities)
+            return coreDataManager.taskEntities
         } catch {
             throw TaskError.invalidData
         }

@@ -13,27 +13,20 @@ import Foundation
 
 final class TaskListInteractor: TaskListInteractorInputProtocol {
     var presenter: TaskListInteractorOutputProtocol?
-    private let taskManager: TaskManager
+    private let taskManager = TaskManager()
+    private let coreDataManager = CoreDataManager()
     
-    init() {
-        self.taskManager = TaskManager()
-    }
-    
-    func fetchTasks() async throws -> [TaskModel] {
-        return try await taskManager.fetchTasks()
+    func fetchTasks() async throws -> [TaskEntity] {
+//        return try await taskManager.fetchTasks() TODO: Get tasks from API on first launch 
+        return coreDataManager.getTasks()
     }
     
     func retrieveTasks() {
-//        presenter?.didRetriveTasks() TODO: Resolve later
+        presenter?.didRetriveTasks(coreDataManager.getTasks()) 
     }
     
-    func saveTask(_ task: TaskModel) {
-        TaskStore.init().addTask(task)
-        presenter?.didAddTask(task)
-    }
-    
-    func deleteTask(_ task: TaskModel) {
-        TaskStore.init().removeTask(task)
+    func deleteTask(_ task: TaskEntity) {
+        coreDataManager.deleteTask(entity: task)
         presenter?.didRemoveTask(task)
     }
 }

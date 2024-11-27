@@ -11,8 +11,8 @@
 
 import Foundation
 
-struct TodoResponse: Decodable {
-    let id: Int
+struct TodoResponse: Decodable, Identifiable {
+    let id = UUID()
     let todo: String
     let completed: Bool
     let date: Date?

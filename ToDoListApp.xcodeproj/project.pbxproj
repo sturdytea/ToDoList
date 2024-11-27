@@ -13,6 +13,7 @@
 		B83595E32CF5FA95003C8FF3 /* TodoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83595E22CF5FA95003C8FF3 /* TodoResponse.swift */; };
 		B83595E72CF6FE88003C8FF3 /* TaskEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83595E52CF6FE88003C8FF3 /* TaskEntity+CoreDataClass.swift */; };
 		B83595E82CF6FE88003C8FF3 /* TaskEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83595E62CF6FE88003C8FF3 /* TaskEntity+CoreDataProperties.swift */; };
+		B83595EB2CF708CE003C8FF3 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83595EA2CF708CE003C8FF3 /* CoreDataManager.swift */; };
 		B8B4B9732CF0AD8800896EF6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8B4B9692CF0AD8800896EF6 /* Colors.xcassets */; };
 		B8B4B9742CF0AD8800896EF6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8B4B96A2CF0AD8800896EF6 /* Images.xcassets */; };
 		B8B4B9762CF0AD8800896EF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B4B96C2CF0AD8800896EF6 /* AppDelegate.swift */; };
@@ -43,6 +44,7 @@
 		B83595E22CF5FA95003C8FF3 /* TodoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoResponse.swift; sourceTree = "<group>"; };
 		B83595E52CF6FE88003C8FF3 /* TaskEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B83595E62CF6FE88003C8FF3 /* TaskEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B83595EA2CF708CE003C8FF3 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		B8B4B9472CF0AA8D00896EF6 /* ToDoListApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoListApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8B4B9692CF0AD8800896EF6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		B8B4B96A2CF0AD8800896EF6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				B83595DA2CF5DE75003C8FF3 /* TaskManager.swift */,
+				B83595EA2CF708CE003C8FF3 /* CoreDataManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 				B8B4B9852CF0B2F800896EF6 /* TaskListRouter.swift in Sources */,
 				B8B4B9892CF0B31D00896EF6 /* TaskListInteractor.swift in Sources */,
 				B8B4B98F2CF0D90F00896EF6 /* TaskDetailsPresenter.swift in Sources */,
+				B83595EB2CF708CE003C8FF3 /* CoreDataManager.swift in Sources */,
 				B83595DE2CF5ED0D003C8FF3 /* TaskResponseBody.swift in Sources */,
 				B8B4B98D2CF0D90000896EF6 /* TaskDetailsRouter.swift in Sources */,
 				B83595E72CF6FE88003C8FF3 /* TaskEntity+CoreDataClass.swift in Sources */,

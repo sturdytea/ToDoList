@@ -12,13 +12,13 @@
 import Foundation
 
 class TaskStore {
-    var tasks: [TaskModel] = []
+    var tasks: [TaskEntity] = []
     
-    func addTask(_ task: TaskModel) {
+    func addTask(_ task: TaskEntity) {
         tasks.append(task)
     }
     
-    func removeTask(_ task: TaskModel) {
+    func removeTask(_ task: TaskEntity) {
         if let index = tasks.firstIndex(where: { $0 as! AnyHashable == task as! AnyHashable}) {
             tasks.remove(at: index)
         }

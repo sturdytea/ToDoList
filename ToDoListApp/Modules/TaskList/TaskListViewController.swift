@@ -14,11 +14,7 @@ import UIKit
 final class TaskListViewController: UITableViewController {
     
     var presenter: TaskListPresenterProtocol?
-    var tasks: [TaskModel] = [] {
-        didSet {
-            taskListView.tableView.reloadData()
-        }
-    }
+    var tasks: [TaskEntity] = []
     
     private lazy var taskListView = TaskListView()
     override func loadView() {
@@ -34,6 +30,10 @@ final class TaskListViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        presenter?.viewWillAppear()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         presenter?.viewWillAppear()
     }
     
@@ -64,7 +64,7 @@ final class TaskListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.identifier, for: indexPath) as! TaskListTableViewCell
         let task = tasks[indexPath.row]
-        cell.configureCell(task.todo, task.desc ?? "")
+        cell.configureCell(task.todo ?? "", task.desc ?? "")
         return cell
     }
     
@@ -82,9 +82,11 @@ final class TaskListViewController: UITableViewController {
 }
 
 extension TaskListViewController: TaskListViewProtocol {
-    func showTasks(_ tasks: [TaskModel]) {
+    func showTasks(_ tasks: [TaskEntity]) {
         self.tasks = tasks
-        taskListView.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.taskListView.tableView.reloadData()
+        }
     }
     
     func showErrorMessage(_ message: String) {

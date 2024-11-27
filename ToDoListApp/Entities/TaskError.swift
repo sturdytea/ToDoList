@@ -12,5 +12,5 @@
 import Foundation
 
 enum TaskError: Error {
-    case network, responseCodeError, invalidData
+    case network, responseCodeError, invalidData, fetchError
 }

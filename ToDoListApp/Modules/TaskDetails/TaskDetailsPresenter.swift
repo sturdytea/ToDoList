@@ -14,6 +14,7 @@ import Foundation
 final class TaskDetailsPresenter: TaskDetailsPresenterProtocol {
     
     var view: TaskDetailsViewProtocol?
+    var listView: TaskListViewProtocol?
     var interactor: TaskDetailsInteractorInputProtocol?
     var router: TaskDetailsRouterProtocol?
     
@@ -23,6 +24,10 @@ final class TaskDetailsPresenter: TaskDetailsPresenterProtocol {
         }
     }
     
+    func addTask(_ title: String) {
+        interactor?.saveTask(title)
+    }
+    
     func editTask(todo: String, desc: String) {
         interactor?.editTask(todo: todo, desc: desc)
     }
@@ -30,7 +35,17 @@ final class TaskDetailsPresenter: TaskDetailsPresenterProtocol {
 
 extension TaskDetailsPresenter: TaskDetailsInteractorOutputProtocol {
     
-    func didEditTask(_ task: TaskModel) {
+    func didAddTask(_ title: String) {
+        interactor?.retrieveTasks()
+    }
+
+    func didEditTask(_ task: TaskEntity) {
         view?.showTask(task)
+    }
+    
+    func didRetriveTasks(_ tasks: [TaskEntity]) {
+        
+            self.listView?.showTasks(tasks)
+        
     }
 }
