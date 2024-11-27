@@ -33,6 +33,18 @@ class TaskManager {
                 .map({ item in
                     TaskModel(response: item)
                 })
+            
+            for task in tasks {
+                let newEntity = TaskEntity(context: coreDataManager.context)
+                newEntity.id = task.id
+                newEntity.todo = task.todo
+                newEntity.date = Date()
+                newEntity.isCompleted = task.isCompleted
+                newEntity.desc = task.desc
+                
+                coreDataManager.taskEntities.append(newEntity)
+            }
+            
             print(coreDataManager.taskEntities)
             return coreDataManager.taskEntities
         } catch {

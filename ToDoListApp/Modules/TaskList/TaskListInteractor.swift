@@ -17,7 +17,11 @@ final class TaskListInteractor: TaskListInteractorInputProtocol {
     private let coreDataManager = CoreDataManager()
     
     func fetchTasks() async throws -> [TaskEntity] {
-//        return try await taskManager.fetchTasks() TODO: Get tasks from API on first launch 
+        
+        if isFirstLaunch() {
+            let tasks = try await taskManager.fetchTasks()
+            coreDataManager.taskEntities = tasks
+        }
         return coreDataManager.getTasks()
     }
     
@@ -28,5 +32,16 @@ final class TaskListInteractor: TaskListInteractorInputProtocol {
     func deleteTask(_ task: TaskEntity) {
         coreDataManager.deleteTask(entity: task)
         presenter?.didRemoveTask(task)
+    }
+    
+    private func isFirstLaunch() -> Bool {
+        let hasFetchedDataKey = "hasFetchedData"
+        let defaults = UserDefaults.standard
+        
+        if !defaults.bool(forKey: hasFetchedDataKey) {
+            defaults.set(true, forKey: hasFetchedDataKey)
+            return true
+        }
+        return false
     }
 }

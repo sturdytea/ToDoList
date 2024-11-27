@@ -14,7 +14,11 @@ import UIKit
 final class TaskListViewController: UITableViewController {
     
     var presenter: TaskListPresenterProtocol?
-    var tasks: [TaskEntity] = []
+    var tasks: [TaskEntity] = [] {
+        didSet {
+            taskListView.tableView.reloadData()
+        }
+    }
     
     private lazy var taskListView = TaskListView()
     override func loadView() {
@@ -29,11 +33,8 @@ final class TaskListViewController: UITableViewController {
         setupView()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        presenter?.viewWillAppear()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         presenter?.viewWillAppear()
     }
     
@@ -84,9 +85,6 @@ final class TaskListViewController: UITableViewController {
 extension TaskListViewController: TaskListViewProtocol {
     func showTasks(_ tasks: [TaskEntity]) {
         self.tasks = tasks
-        DispatchQueue.main.async {
-            self.taskListView.tableView.reloadData()
-        }
     }
     
     func showErrorMessage(_ message: String) {
