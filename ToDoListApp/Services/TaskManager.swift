@@ -27,7 +27,6 @@ class TaskManager {
         
         do {
             let decodedResponse = try decoder.decode(TaskResponseBody.self, from: data)
-            print(decodedResponse)
             
             let tasks: [TaskModel] = decodedResponse.todos
                 .map({ item in
@@ -44,8 +43,6 @@ class TaskManager {
                 
                 coreDataManager.taskEntities.append(newEntity)
             }
-            
-            print(coreDataManager.taskEntities)
             return coreDataManager.taskEntities
         } catch {
             throw TaskError.invalidData
