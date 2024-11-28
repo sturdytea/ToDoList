@@ -12,9 +12,14 @@
 import Foundation
 
 class TaskManager {
+    
+    static let shared = TaskManager()
+    
     private let url = "https://dummyjson.com/todos"
     private lazy var decoder = JSONDecoder()
-    private lazy var coreDataManager = CoreDataManager()
+    private lazy var coreDataManager = CoreDataManager.shared
+    
+    private init() { }
     
     func fetchTasks() async throws -> [TaskEntity] {
         guard let url = URL(string: url) else {

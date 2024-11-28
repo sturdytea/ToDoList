@@ -19,8 +19,8 @@ final class TaskDetailsInteractor: TaskDetailsInteractorInputProtocol {
     private let coreDataManager: CoreDataManager
     
     init() {
-        self.taskManager = TaskManager()
-        self.coreDataManager = CoreDataManager()
+        self.taskManager = TaskManager.shared
+        self.coreDataManager = CoreDataManager.shared
     }
     
     func saveTask(_ title: String) {

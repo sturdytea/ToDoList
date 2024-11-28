@@ -15,9 +15,13 @@ import CoreData
 
 final class CoreDataManager {
     
+    static let shared = CoreDataManager()
+    
     public var taskEntities: [TaskEntity] = []
     
     var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    private init() { }
     
     func getTasks() -> [TaskEntity] {
         do {

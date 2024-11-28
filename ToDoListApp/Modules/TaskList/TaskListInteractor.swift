@@ -13,8 +13,8 @@ import Foundation
 
 final class TaskListInteractor: TaskListInteractorInputProtocol {
     var presenter: TaskListInteractorOutputProtocol?
-    private let taskManager = TaskManager()
-    private let coreDataManager = CoreDataManager()
+    private let taskManager = TaskManager.shared
+    private let coreDataManager = CoreDataManager.shared
     
     func fetchTasks() async throws -> [TaskEntity] {
         
