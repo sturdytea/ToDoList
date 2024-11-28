@@ -15,6 +15,7 @@ protocol TaskListViewProtocol {
     var presenter: TaskListPresenterProtocol? { get set }
     func showTasks(_ tasks: [TaskEntity])
     func showErrorMessage(_ message: String)
+    func updateTaskCount(amount: Int)
 }
 
 protocol TaskListPresenterProtocol {

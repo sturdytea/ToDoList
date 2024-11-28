@@ -54,7 +54,6 @@ final class TaskListViewController: UITableViewController {
             ]
             navigationController.navigationBar.prefersLargeTitles = true
         }
-        taskListView.configureToolBar(amount: tasks.count)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -65,7 +64,7 @@ final class TaskListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.identifier, for: indexPath) as! TaskListTableViewCell
         let task = tasks[indexPath.row]
-        cell.configureCell(task.todo ?? "", task.desc ?? "")
+        cell.configureCell(task.todo ?? "", task.desc ?? "", task.date ?? Date(), isChecked: task.isCompleted)
         return cell
     }
     
@@ -85,6 +84,21 @@ final class TaskListViewController: UITableViewController {
 extension TaskListViewController: TaskListViewProtocol {
     func showTasks(_ tasks: [TaskEntity]) {
         self.tasks = tasks
+    }
+    
+    func updateTaskCount(amount: Int) {
+        DispatchQueue.main.async {
+            let counter: String
+            switch amount {
+            case 1:
+                counter = LocalizedContent.Counter.oneTask
+            case 2...4:
+                counter = LocalizedContent.Counter.twoToFourTasks
+            default:
+                counter = LocalizedContent.Counter.multipleTasks
+            }
+            self.taskListView.counter.text = "\(amount) \(counter)"
+        }
     }
     
     func showErrorMessage(_ message: String) {

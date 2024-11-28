@@ -11,7 +11,7 @@
 
 import UIKit
 
-final class TaskDetailsViewController: UIViewController, UITextFieldDelegate {
+final class TaskDetailsViewController: UIViewController, UITextViewDelegate {
 
     var presenter: TaskDetailsPresenterProtocol?
     private var initialTitle: String?
@@ -39,11 +39,21 @@ final class TaskDetailsViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.async {
             self.taskDetailsView.title.becomeFirstResponder()
         }
+        
+        initialTitle = taskDetailsView.title.text
+        initialDescription = taskDetailsView.desc.text
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        initialTitle = taskDetailsView.title.text
-        initialDescription = taskDetailsView.desc.text
+        if taskDetailsView.title.text != LocalizedContent.Placeholder.title && !taskDetailsView.title.text.isEmpty {
+            taskDetailsView.title.textColor = .textPrimary
+        }
+        
+        if taskDetailsView.desc.text == LocalizedContent.Placeholder.desc {
+            taskDetailsView.desc.textColor = .textSecondary
+        } else {
+            taskDetailsView.desc.textColor = .textPrimary
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -51,25 +61,58 @@ final class TaskDetailsViewController: UIViewController, UITextFieldDelegate {
         
         if let title = taskDetailsView.title.text,
               !title.isEmpty,
-              title != initialTitle,
+           title != initialTitle,
+           title != LocalizedContent.Placeholder.title,
               !title.trimmingCharacters(in: .whitespaces).isEmpty {
             presenter?.addTask(title)
         }
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == taskDetailsView.title {
-            guard let inputText = textField.text,
-                  !inputText.isEmpty,
-                  !inputText.trimmingCharacters(in: .whitespaces).isEmpty else {
-                return
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView == taskDetailsView.title {
+            if textView.text == LocalizedContent.Placeholder.title {
+                textView.text = ""
+                textView.textColor = .textPrimary
             }
-            presenter?.editTask(todo: inputText, desc: "")
         }
         
-        if textField == taskDetailsView.desc {
-            guard let inputText = taskDetailsView.desc.text else { return }
-            presenter?.editTask(todo: "", desc: inputText)
+        if textView == taskDetailsView.desc {
+            if textView.text == LocalizedContent.Placeholder.desc {
+                textView.text = ""
+                textView.textColor = .textPrimary
+            }
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView == taskDetailsView.title {
+            if textView.text.isEmpty {
+                textView.text = LocalizedContent.Placeholder.title
+                textView.textColor = .textSecondary
+                return
+            }
+            
+            if let inputText = textView.text,
+               !inputText.isEmpty,
+               !inputText.trimmingCharacters(in: .whitespaces).isEmpty,
+               inputText != LocalizedContent.Placeholder.title {
+                presenter?.editTask(todo: inputText, desc: "")
+            }
+        }
+        
+        if textView == taskDetailsView.desc {
+            if textView.text.isEmpty {
+                textView.text = LocalizedContent.Placeholder.desc
+                textView.textColor = .textSecondary
+                return
+            }
+            
+            if let inputText = textView.text,
+               !inputText.isEmpty,
+               !inputText.trimmingCharacters(in: .whitespaces).isEmpty,
+               inputText != LocalizedContent.Placeholder.desc {
+                presenter?.editTask(todo: "", desc: inputText)
+            }
         }
     }
     
@@ -81,8 +124,12 @@ final class TaskDetailsViewController: UIViewController, UITextFieldDelegate {
 extension TaskDetailsViewController: TaskDetailsViewProtocol {
     
     func showTask(_ task: TaskEntity) {
-        taskDetailsView.title.text = task.todo
-        taskDetailsView.desc.text = task.desc
+        DispatchQueue.main.async {
+            self.taskDetailsView.configureView(task.todo ?? LocalizedContent.Placeholder.title, task.desc ?? LocalizedContent.Placeholder.desc, task.date ?? Date())
+            
+            self.taskDetailsView.configureTextColors(title: self.taskDetailsView.title.text != LocalizedContent.Placeholder.title ? .textPrimary : .textSecondary, desc: self.taskDetailsView.desc.text != LocalizedContent.Placeholder.desc ? .textPrimary : .textSecondary)
+        }
+        
         initialTitle = task.todo
         initialDescription = task.desc
     }

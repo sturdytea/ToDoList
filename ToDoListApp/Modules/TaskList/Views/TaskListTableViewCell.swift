@@ -11,12 +11,14 @@
 
 import UIKit
 
-final class TaskListTableViewCell: UITableViewCell {
+final class TaskListTableViewCell: UITableViewCell, CheckboxDelegate {
     
     static let identifier = "TaskListTableViewCell"
+    private lazy var dateFormatter = DateFormatter()
     
     private lazy var checkbox: Checkbox = {
         let checkbox = Checkbox()
+        checkbox.delegate = self
         checkbox.translatesAutoresizingMaskIntoConstraints = false
         return checkbox
     }()
@@ -25,7 +27,7 @@ final class TaskListTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.numberOfLines = 1
-        label.textColor = checkbox.isChecked ? .textSecondary : .textPrimary
+        label.textColor = .textPrimary
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -35,7 +37,16 @@ final class TaskListTableViewCell: UITableViewCell {
         label.font = .systemFont(ofSize: 12)
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 2
-        label.textColor = checkbox.isChecked ? .textSecondary : .textPrimary
+        label.textColor = .textPrimary
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var date: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .textSecondary
+        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -48,30 +59,56 @@ final class TaskListTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
-    public func configureCell(_ title: String, _ desc: String) {
+    public func configureCell(_ title: String, _ desc: String, _ date: Date, isChecked: Bool) {
         self.title.text = title
         self.desc.text = desc
+        dateFormatter.dateFormat = "dd/MM/yy"
+        self.date.text = dateFormatter.string(from: date)
         setupViews()
         setupConstraints()
     }
     
     private func setupViews() {
-        contentView.addSubview(checkbox)
-        contentView.addSubview(title)
-        contentView.addSubview(desc)
+        addSubview(checkbox)
+        addSubview(title)
+        addSubview(desc)
+        addSubview(date)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             checkbox.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             checkbox.leadingAnchor.constraint(equalTo: leadingAnchor),
+            checkbox.widthAnchor.constraint(equalToConstant: 28),
             
-            title.leadingAnchor.constraint(equalTo: checkbox.trailingAnchor),
-            title.topAnchor.constraint(equalTo: checkbox.topAnchor),
+            title.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            title.leadingAnchor.constraint(equalTo: checkbox.trailingAnchor, constant: 8),
+            title.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            title.heightAnchor.constraint(equalToConstant: 22),
             
             desc.leadingAnchor.constraint(equalTo: title.leadingAnchor),
             desc.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 8),
             desc.trailingAnchor.constraint(equalTo: trailingAnchor),
+            
+            date.leadingAnchor.constraint(equalTo: desc.leadingAnchor),
+            date.topAnchor.constraint(equalTo: desc.bottomAnchor, constant: 4),
+            date.trailingAnchor.constraint(equalTo: trailingAnchor),
+            date.heightAnchor.constraint(equalToConstant: 16),
+            date.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
         ])
+    }
+    
+    func checkboxTapped(isChecked: Bool, checkbox: Checkbox) {
+        if isChecked {
+            let attributedString = NSAttributedString.init(string: title.text ?? "", attributes: [
+                .strikethroughStyle: NSUnderlineStyle.single.rawValue
+            ])
+            title.attributedText = attributedString
+        } else {
+            title.attributedText = NSAttributedString(string: title.text ?? "")
+        }
+        
+        title.textColor = isChecked ? .textSecondary : .textPrimary
+        desc.textColor = isChecked ? .textSecondary : .textPrimary
     }
 }

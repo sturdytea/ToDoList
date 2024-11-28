@@ -63,6 +63,7 @@ extension TaskListPresenter: TaskListInteractorOutputProtocol {
     
     func didRetriveTasks(_ tasks: [TaskEntity]) {
         view?.showTasks(tasks)
+        view?.updateTaskCount(amount: tasks.count)
     }
     
     func onError(message: String) {

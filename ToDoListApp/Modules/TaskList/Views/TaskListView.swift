@@ -18,14 +18,20 @@ final class TaskListView: UIView {
     private(set) lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(TaskListTableViewCell.self, forCellReuseIdentifier: TaskListTableViewCell.identifier)
-        tableView.estimatedRowHeight = 106
-        tableView.rowHeight = 106 // TODO: Make height computable
+        tableView.estimatedRowHeight = 90
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
     
-    private var amount: Int = 0
     private let barHeight: CGFloat = 88
+    
+    lazy var counter: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 11)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     lazy var toolBar: UIToolbar = {
         let toolbar = UIToolbar(frame: .init(x: 0, y: UIScreen.main.bounds.height - 72, width: UIScreen.main.bounds.width, height: barHeight))
@@ -36,18 +42,10 @@ final class TaskListView: UIView {
         toolbar.sizeToFit()
         
         let spaceArea: UIBarButtonItem = .init(systemItem: .flexibleSpace)
-        let taskCount: UIBarButtonItem = .init(title: "\(amount) \(LocalizedContent.tasksAmount)", style: .plain, target: self, action: .none)
+        let counterContainer: UIBarButtonItem = .init(customView: counter)
         let newTask: UIBarButtonItem = .init(image: UIImage(systemName: "square.and.pencil"), style: .done, target: self, action: #selector(createNewTaskTapped))
         
-        let customFont = UIFont.systemFont(ofSize: 11)
-        let customAttributes: [NSAttributedString.Key: Any] = [
-            .font: customFont,
-            .foregroundColor: UIColor.textPrimary
-        ]
-        
-        taskCount.setTitleTextAttributes(customAttributes, for: .normal)
-        
-        toolbar.setItems([spaceArea, taskCount, spaceArea, newTask], animated: false)
+        toolbar.setItems([spaceArea, counterContainer, spaceArea, newTask], animated: false)
         toolbar.isUserInteractionEnabled = true
         return toolbar
     }()
@@ -84,9 +82,6 @@ final class TaskListView: UIView {
 }
 
 extension TaskListView {
-    func configureToolBar(amount: Int) {
-        self.amount = amount
-    }
     
     @objc func createNewTaskTapped() {
         delegate?.didTapCreateNewTask()

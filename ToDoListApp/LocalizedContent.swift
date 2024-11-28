@@ -13,5 +13,15 @@ import Foundation
 
 enum LocalizedContent {
     static let largeTitle = "Задачи"
-    static let tasksAmount = "Задач"
+    
+    enum Counter {
+        static let oneTask = "Задача"
+        static let twoToFourTasks = "Задачи"
+        static let multipleTasks = "Задач"
+    }
+    
+    enum Placeholder {
+        static let title = "Заголовок"
+        static let desc = "Здесь можно добавить описание..."
+    }
 }

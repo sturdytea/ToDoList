@@ -11,10 +11,15 @@
 
 import UIKit
 
+protocol CheckboxDelegate {
+    func checkboxTapped(isChecked: Bool, checkbox: Checkbox)
+}
+
 final class Checkbox: UIButton {
     
     var isChecked = false
     private let checkbox = UIImageView()
+    var delegate: CheckboxDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,8 +37,8 @@ final class Checkbox: UIButton {
         addSubview(checkbox)
         addGestureRecognizer(checkTaskGesture)
         NSLayoutConstraint.activate([
-            checkbox.heightAnchor.constraint(equalToConstant: 24),
-            checkbox.widthAnchor.constraint(equalToConstant: 24),
+            checkbox.heightAnchor.constraint(equalToConstant: 28),
+            checkbox.widthAnchor.constraint(equalToConstant: 28),
         ])
     }
     
@@ -43,9 +48,10 @@ final class Checkbox: UIButton {
     
     @objc private func checkTask() {
         toggle()
+        delegate?.checkboxTapped(isChecked: isChecked, checkbox: self)
     }
     
-    func toggle() {
+    private func toggle() {
         self.isChecked.toggle()
         checkbox.image = UIImage(systemName: isChecked ? "checkmark.circle" : "circle")
         checkbox.tintColor = isChecked ? .accent : .stroke
