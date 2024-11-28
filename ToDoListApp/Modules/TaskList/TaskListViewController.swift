@@ -11,7 +11,7 @@
 
 import UIKit
 
-final class TaskListViewController: UITableViewController {
+final class TaskListViewController: UITableViewController, UISearchResultsUpdating {
     
     var presenter: TaskListPresenterProtocol?
     var tasks: [TaskEntity] = [] {
@@ -19,6 +19,21 @@ final class TaskListViewController: UITableViewController {
             taskListView.tableView.reloadData()
         }
     }
+    
+    private var filteredTasks: [TaskEntity] = []
+    
+    private var isSearching: Bool {
+        return !(searchController.searchBar.text?.isEmpty ?? true)
+    }
+    
+    private lazy var searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        controller.searchResultsUpdater = self
+        controller.obscuresBackgroundDuringPresentation = false
+        controller.searchBar.placeholder = LocalizedContent.Placeholder.searchBar
+        controller.searchBar.autocapitalizationType = .none
+        return controller
+    }()
     
     private lazy var taskListView = TaskListView()
     override func loadView() {
@@ -53,31 +68,46 @@ final class TaskListViewController: UITableViewController {
                 NSAttributedString.Key.foregroundColor: UIColor.white
             ]
             navigationController.navigationBar.prefersLargeTitles = true
+            navigationItem.searchController = searchController
         }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("Task count \(tasks.count)")
-        return tasks.count
+        print("Task count \(isSearching ? filteredTasks.count : tasks.count)")
+        return isSearching ? filteredTasks.count : tasks.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TaskListTableViewCell.identifier, for: indexPath) as! TaskListTableViewCell
-        let task = tasks[indexPath.row]
+        let task = isSearching ? filteredTasks[indexPath.row] : tasks[indexPath.row]
         cell.configureCell(task.todo ?? "", task.desc ?? "", task.date ?? Date(), isChecked: task.isCompleted)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let task = tasks[indexPath.row]
+        let task = isSearching ? filteredTasks[indexPath.row] : tasks[indexPath.row]
         presenter?.showTaskDetails(task)
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let taskItem = tasks[indexPath.row]
+            let taskItem = isSearching ? filteredTasks[indexPath.row] : tasks[indexPath.row]
             presenter?.removeTask(taskItem)
         }
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let query = searchController.searchBar.text?.lowercased(), !query.isEmpty else {
+            filteredTasks = []
+            taskListView.tableView.reloadData()
+            return
+        }
+        
+        filteredTasks = tasks.filter { task in
+            (task.todo?.lowercased().contains(query) ?? false) ||
+            (task.desc?.lowercased().contains(query) ?? false)
+        }
+        taskListView.tableView.reloadData()
     }
 }
 

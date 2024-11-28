@@ -23,5 +23,6 @@ enum LocalizedContent {
     enum Placeholder {
         static let title = "Заголовок"
         static let desc = "Здесь можно добавить описание..."
+        static let searchBar = "Поиск"
     }
 }
