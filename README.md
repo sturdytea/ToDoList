@@ -8,6 +8,6 @@
 - [x] Make UI 
 - [x] Connect JSON API
 - [x] Manage CoreData
-- [ ] Add Search
+- [x] Add Search
 - [ ] Create unit-tests for basic components
 - [ ] Update README
