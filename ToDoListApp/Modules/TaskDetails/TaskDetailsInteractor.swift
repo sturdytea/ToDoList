@@ -32,11 +32,11 @@ final class TaskDetailsInteractor: TaskDetailsInteractorInputProtocol {
         guard let task = task else { return }
         
         if todo != "" && todo != task.todo {
-            task.todo = todo
+            coreDataManager.updateTask(entity: task, newName: todo)
         }
         
         if desc != "" && desc != task.desc {
-            task.desc = desc
+            coreDataManager.updateTask(entity: task, newDesc: desc)
         }
         presenter?.didEditTask(task)
     }
