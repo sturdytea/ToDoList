@@ -96,6 +96,11 @@ final class TaskListViewController: UITableViewController, UISearchResultsUpdati
         }
     }
     
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let interaction = UIContextMenuInteraction(delegate: self)
+        cell.addInteraction(interaction)
+    }
+    
     func updateSearchResults(for searchController: UISearchController) {
         guard let query = searchController.searchBar.text?.lowercased(), !query.isEmpty else {
             filteredTasks = []
@@ -141,4 +146,107 @@ extension TaskListViewController: TaskListViewDelegate {
     func didTapCreateNewTask() {
         presenter?.showEmptyTaskDetails()
     }
+}
+
+extension TaskListViewController: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        guard let indexPath = taskListView.tableView.indexPathForRow(at: location) else {
+            return nil
+        }
+        
+        let task = tasks[indexPath.row]
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: {
+            self.createTaskPreview(for: task)
+        }, actionProvider: { _ in
+            self.createTaskMenu(for: task, at: indexPath)
+        })
+    }
+    
+    private func createTaskPreview(for task: TaskEntity) -> UIViewController {
+        let preview = UIViewController()
+        preview.view.backgroundColor = .customGray
+        preview.view.layer.cornerRadius = 12
+        
+        let cell = TaskListTableViewCell()
+        
+        let cellHeight = getCellHeight(for: task)
+        preview.preferredContentSize = CGSize(width: self.view.bounds.width - 32, height: cellHeight)
+        
+        lazy var title: UILabel = {
+            let label = cell.title
+            label.text = task.todo
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+        
+        lazy var desc: UILabel = {
+            let label = cell.desc
+            label.text = task.desc
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+        
+        lazy var date: UILabel = {
+            let label = cell.date
+            label.text = cell.formatDate(task.date ?? Date())
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+        
+        preview.view.addSubview(title)
+        preview.view.addSubview(desc)
+        preview.view.addSubview(date)
+        
+        NSLayoutConstraint.activate([
+            title.centerXAnchor.constraint(equalTo: preview.view.centerXAnchor),
+            title.topAnchor.constraint(equalTo: preview.view.topAnchor, constant: 16),
+            title.leadingAnchor.constraint(equalTo: preview.view.trailingAnchor, constant: 8),
+            title.trailingAnchor.constraint(equalTo: preview.view.trailingAnchor, constant: -16),
+            title.heightAnchor.constraint(equalToConstant: 22),
+            
+            desc.leadingAnchor.constraint(equalTo: title.leadingAnchor),
+            desc.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 8),
+            desc.trailingAnchor.constraint(equalTo: preview.view.trailingAnchor),
+            
+            date.leadingAnchor.constraint(equalTo: desc.leadingAnchor),
+            date.topAnchor.constraint(equalTo: desc.bottomAnchor, constant: 4),
+            date.trailingAnchor.constraint(equalTo: preview.view.trailingAnchor),
+            date.heightAnchor.constraint(equalToConstant: 16),
+            date.bottomAnchor.constraint(equalTo: preview.view.bottomAnchor, constant: -16)
+        ])
+        
+        return preview
+    }
+    
+    private func getCellHeight(for task: TaskEntity) -> CGFloat {
+        guard let row = (isSearching ? filteredTasks : tasks).firstIndex(where: { $0 == task }) else {
+            return 44
+        }
+        
+        let indexPath = IndexPath(row: row, section: 0)
+        
+        let cellRect = self.taskListView.tableView.rectForRow(at: indexPath)
+        return cellRect.height
+    }
+    
+    private func createTaskMenu(for task: TaskEntity, at indexPath: IndexPath) -> UIMenu {
+        let editAction = UIAction(title: LocalizedContent.MenuOption.edit, image: UIImage(systemName: "square.and.pencil")) { _ in
+            self.presenter?.showTaskDetails(task)
+        }
+        
+        let shareAction = UIAction(title: LocalizedContent.MenuOption.share, image: UIImage(systemName: "square.and.arrow.up")) { _ in
+            let activityController = UIActivityViewController(activityItems: [task.todo ?? "", task.desc ?? ""], applicationActivities: nil)
+            self.present(activityController, animated: true)
+        }
+        
+        let deleteAction = UIAction(title: LocalizedContent.MenuOption.delete, image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+            self.presenter?.removeTask(task)
+            self.tasks.remove(at: indexPath.row)
+            self.taskListView.tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+        
+        return UIMenu(title: "", children: [editAction, shareAction, deleteAction])
+    }
+    
 }

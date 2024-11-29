@@ -14,7 +14,6 @@ import UIKit
 final class TaskListTableViewCell: UITableViewCell, CheckboxDelegate {
     
     static let identifier = "TaskListTableViewCell"
-    private lazy var dateFormatter = DateFormatter()
     
     private lazy var checkbox: Checkbox = {
         let checkbox = Checkbox()
@@ -23,7 +22,7 @@ final class TaskListTableViewCell: UITableViewCell, CheckboxDelegate {
         return checkbox
     }()
     
-    private lazy var title: UILabel = {
+    lazy var title: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.numberOfLines = 1
@@ -32,7 +31,7 @@ final class TaskListTableViewCell: UITableViewCell, CheckboxDelegate {
         return label
     }()
     
-    private lazy var desc: UILabel = {
+    lazy var desc: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.lineBreakMode = .byWordWrapping
@@ -42,7 +41,7 @@ final class TaskListTableViewCell: UITableViewCell, CheckboxDelegate {
         return label
     }()
     
-    private lazy var date: UILabel = {
+    lazy var date: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textColor = .textSecondary
@@ -62,10 +61,15 @@ final class TaskListTableViewCell: UITableViewCell, CheckboxDelegate {
     public func configureCell(_ title: String, _ desc: String, _ date: Date, isChecked: Bool) {
         self.title.text = title
         self.desc.text = desc
-        dateFormatter.dateFormat = "dd/MM/yy"
-        self.date.text = dateFormatter.string(from: date)
+        self.date.text = formatDate(date)
         setupViews()
         setupConstraints()
+    }
+    
+    public func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yy"
+        return formatter.string(from: date)
     }
     
     private func setupViews() {

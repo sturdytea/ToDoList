@@ -15,7 +15,7 @@ final class TaskListView: UIView {
     
     var delegate: TaskListViewDelegate?
     
-    private(set) lazy var tableView: UITableView = {
+     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(TaskListTableViewCell.self, forCellReuseIdentifier: TaskListTableViewCell.identifier)
         tableView.estimatedRowHeight = 90

@@ -25,4 +25,10 @@ enum LocalizedContent {
         static let desc = "Здесь можно добавить описание..."
         static let searchBar = "Поиск"
     }
+    
+    enum MenuOption {
+        static let edit = "Редактировать"
+        static let share = "Поделиться"
+        static let delete = "Удалить"
+    }
 }
