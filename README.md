@@ -3,11 +3,36 @@
   <h1>ToDoList App</h1>
 </div>
 
-### Milestones, 22.11 - 29.11
-- [x] Create Project
-- [x] Make UI 
-- [x] Connect JSON API
-- [x] Manage CoreData
-- [x] Add Search
-- [ ] Create unit-tests for basic components
-- [ ] Update README
+## Реализованные функции:
+- Создание задач
+- Редактирование
+- Удаление задачи
+- Поиск задачи из списка
+- Функция "Поделиться"
+
+## Использованные технологии 
+- UIKit
+- Core Data
+- XCTests
+- Singleton для сервисов
+- Архитектура VIPER
+
+## Требования
+- iOS 15.0+
+- Xcode 14.0
+
+## Установка 
+1. Склонируйте репозиторий
+```
+git clone https://github.com/sturdytea/ToDoList
+```
+
+2.  Откройте проект в Xcode
+```
+cd ToDoListApp
+open ToDoListApp.xcodeproj
+```
+
+
+
+> P.S.: Я вижу недостатки и я продолжу работу над приложением. Сейчас я хотела выполнить максимум до дедлайна. 
