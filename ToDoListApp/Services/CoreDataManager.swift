@@ -13,7 +13,7 @@ import Foundation
 import UIKit
 import CoreData
 
-final class CoreDataManager {
+class CoreDataManager {
     
     static let shared = CoreDataManager()
     
