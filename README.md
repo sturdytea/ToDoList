@@ -1,6 +1,7 @@
 <div align="center">
   <img src="https://github.com/user-attachments/assets/71725597-4ebb-499c-8e92-0027f5e6fe49" style="width: 10%">  
   <h1>ToDoList App</h1>
+  <a href="https://wakatime.com/badge/user/5faee03b-28dd-4595-ad79-0725ff7ff9aa/project/21fa9e3e-2fc1-47c8-a0f4-3e84b5dcea7e"><img src="https://wakatime.com/badge/user/5faee03b-28dd-4595-ad79-0725ff7ff9aa/project/21fa9e3e-2fc1-47c8-a0f4-3e84b5dcea7e.svg" alt="wakatime"></a>
 </div>
 
 ## Реализованные функции:
